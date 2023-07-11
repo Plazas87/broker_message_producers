@@ -1,0 +1,15 @@
+[tool.poetry]
+name = "kafka-data-ingestion"
+version = "0.1.0"
+description = ""
+authors = ["Andres Plazas <apr@certainly.com>"]
+readme = "README.md"
+packages = [{include = "kafka_data_ingestion", from = "src"}]
+
+[tool.poetry.dependencies]
+python = "^3.7"
+
+
+[build-system]
+requires = ["poetry-core"]
+build-backend = "poetry.core.masonry.api"
