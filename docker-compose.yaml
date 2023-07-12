@@ -1,0 +1,17 @@
+version: '3'
+
+services:
+  kafka:
+    image: 'bitnami/kafka:latest'
+    container_name: broker
+    ports:
+      - '9094:9094'
+    environment:
+      # For safety reasons, do not use this flag in a production environment.
+      - ALLOW_PLAINTEXT_LISTENER=yes  # the listener will be without authentication and non-encrypted
+      - KAFKA_CFG_LISTENERS=PLAINTEXT://:9092,CONTROLLER://0.0.0.0:9093,EXTERNAL://:9094
+      - KAFKA_CFG_ADVERTISED_LISTENERS=PLAINTEXT://kafka:9092,EXTERNAL://127.0.0.1:9094
+      - KAFKA_CFG_LISTENER_SECURITY_PROTOCOL_MAP=CONTROLLER:PLAINTEXT,EXTERNAL:PLAINTEXT,PLAINTEXT:PLAINTEXT
+
+    volumes:
+      - /kafka/data:/bitnami/kafka
