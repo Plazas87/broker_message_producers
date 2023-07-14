@@ -1,13 +1,16 @@
 [tool.poetry]
-name = "kafka-data-ingestion"
+name = "producers"
 version = "0.1.0"
 description = ""
 authors = ["Andres Plazas <apr@certainly.com>"]
 readme = "README.md"
-packages = [{include = "kafka_data_ingestion", from = "src"}]
+packages = [{include = "producers", from = "./"}]
 
 [tool.poetry.dependencies]
-python = "^3.7"
+python = "^3.9"
+pandas = "^2.0.3"
+kafka-python = "^2.0.2"
+typer = {extras = ["all"], version = "^0.9.0"}
 
 
 [build-system]
