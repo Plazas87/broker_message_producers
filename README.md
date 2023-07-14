@@ -77,11 +77,13 @@ You should see something like the following:
 
 ### Data ingestion using Python
 
-Now that we have a Broker server running we can connect a data source (a Producer) to it. 
-For this, we have created a Python Producer that reads data from a file and send it continously to the Kafka topic that we have created. 
+Now that we have a running Broker server we can connect a data-source (a Producer) to it. 
+For this, I have created a CLI Python application to luanch Producers that reads data from a file and send it continously to the Kafka topic.
 
-To start this Producer just run:
+To start a Kafka Producer that publish messages directly to the topic 'room_1' that we have created:
 
 ```bash
-python -m src/producer.py
+python -m producers kafka --host localhost --port 9094 --topic room_1 --partition 0 --file-path ./data/room_1/temperature.csv
 ```
+
+This command simulates a continuous data flow to the Kafka broker.
