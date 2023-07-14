@@ -43,7 +43,7 @@ kafka-topics.sh --create --bootstrap-server 127.0.0.1:9094 --replication-factor 
 ```
 
 As a result, you shoul see something like the following:
-![](images/kafka_create_topic.png)
+![](docs/images/kafka_create_topic.png)
 
 NOTE: pay attention to the warning message, it is impotant to be awere of this topic name limitations.
 
@@ -57,7 +57,7 @@ kafka-console-producer.sh --bootstrap-server 127.0.0.1:9094 --producer.config /o
 ```
 This command, let's you to write as many messages as you want. The topic will receive these messages and store them until a Consumer process them (Press CTRL-C to stop sending messages). You can let this producer active to keep sending messages, you will see the consumer receive these messages in the next step.
 
-![](images/kafka_producer.png)
+![](docs/images/kafka_producer.png)
 
 4. Consume messages from a topic:
 
@@ -73,7 +73,7 @@ NOTE: For this example, once a message have been consumed by a Consumer it is no
 
 You should see something like the following:
 
-![](images/kafka_producer_consumer.png)
+![](docs/images/kafka_producer_consumer.png)
 
 ### Data ingestion using Python
 
