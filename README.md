@@ -20,6 +20,8 @@ simulate a continuous incoming data flow with its data. Think of it as
 something similar to a temperature sensor or stock prices during open 
 hours. 
 
+You can check the Medium article for this project in: [A Python Kafka Producer](https://bit.ly/python-kafka-producer)
+
 
 ## Quickstart
 
