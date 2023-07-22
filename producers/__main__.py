@@ -1,11 +1,17 @@
 """Producers package entrypoint."""
 from typing_extensions import Annotated
 import typer
+import logging
 from .infrastructure.data_readers.csv import Reader
 from .infrastructure.serializers.bytes import Serializer
 from .infrastructure.clients.kafka import Producer
 
+
+logging.basicConfig(encoding='utf-8', level=logging.INFO)
+
+
 app = typer.Typer(rich_markup_mode="rich")
+
 
 @app.command()
 def kafka(

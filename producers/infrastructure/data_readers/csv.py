@@ -1,19 +1,19 @@
 """CSV file data reader module."""
 import pathlib
 import time
-from typing import Dict, Generator
+from typing import Any, Dict, Generator
 from . import IReader
 import pandas as pd
 
 
-class Reader(IReader[Dict[str, int]]):
+class Reader(IReader[Dict[str, Any]]):
     """Reader class."""
 
     def __init__(self, path: str) -> None:
         """Class constructor."""
         self._path = pathlib.Path(path)
 
-    def read(self) -> Generator[Dict[str, int], None, None]:
+    def read(self) -> Generator[Dict[str, Any], None, None]:
         """Read data from a .csv file and return it as generator.
 
         Yields:
@@ -25,4 +25,7 @@ class Reader(IReader[Dict[str, int]]):
         for chunk in pd.read_csv(self._path, chunksize=10):
             for measurement in chunk.itertuples(name="Measurement"):
                 time.sleep(1)  # simulates a sample rate of 1 second for a sensor
-                yield {"temperature": measurement.temperature}
+                yield {
+                    "temperature": measurement.temperature,
+                    "timestamp": measurement.timestamp
+                }
