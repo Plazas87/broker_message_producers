@@ -2,6 +2,10 @@
 from typing import Dict
 from kafka import KafkaProducer
 from ...application.ports import IProducer, IReader, ISerializer
+import logging
+
+
+logger = logging.getLogger(__name__)
 
 
 class Producer(IProducer):
@@ -11,7 +15,7 @@ class Producer(IProducer):
     _bootstrap_server_host: str
     _bootstrap_server_port: int
     _topic: str
-    _partition: 0
+    _partition: int
 
     def __init__(self,
         data_source: IReader[Dict[str, int]],
@@ -25,7 +29,7 @@ class Producer(IProducer):
         self._serializer = serializer
         self._broker_client = KafkaProducer(
             bootstrap_servers=f'{bootstrap_server_host}:{str(bootstrap_server_port)}',
-            value_serializer=serializer.serialize
+            value_serializer=self._serializer.serialize
         )
         self._topic = topic
         self._partition = partition
@@ -39,4 +43,4 @@ class Producer(IProducer):
                 partition=self._partition,
                 value=data
             )
-
+            logger.info("Message sent: '%s'", data)
