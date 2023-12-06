@@ -1,10 +1,9 @@
 """Producers package entrypoint."""
+import logging
 from typing_extensions import Annotated
 import typer
-import logging
 
-from producers.infrastructure.clients.kafka import KafkaMessage
-
+from .infrastructure.clients.kafka import KafkaMessage
 from .infrastructure.data_readers.csv import Reader
 from .infrastructure import serializers
 from .infrastructure import clients
@@ -54,24 +53,24 @@ def kafka(
 @app.command()
 def rabbit_mq(
     host: Annotated[
-        str, typer.Option(help="Bootstrap server host.", rich_help_panel="Customization and Utils")
+        str, typer.Option(help="Broker server host.", rich_help_panel="Customization and Utils")
     ],
     port: Annotated[
-        int, typer.Option(help="Bootstrap server port.", rich_help_panel="Customization and Utils")
+        int, typer.Option(help="Broker server port.", rich_help_panel="Customization and Utils")
+    ],
+    exchange: Annotated[
+        str, typer.Option(help="Exchange to use.", rich_help_panel="Customization and Utils")
     ],
     topic: Annotated[
         str, typer.Option(help="Topic to publish message to.", rich_help_panel="Customization and Utils")
     ],
-    exchange: Annotated[
-        int, typer.Option(help="Exchange to use.", rich_help_panel="Customization and Utils")
-    ],
     vhost: Annotated[
         str, typer.Option(help="Topic to publish message to.", rich_help_panel="Customization and Utils")
     ],
-    user: Annotated[int, typer.Option(
+    user: Annotated[str, typer.Option(
         help="RabbitMQ user.", rich_help_panel="Customization and Utils"
     )],
-    password: Annotated[int, typer.Option(
+    password: Annotated[str, typer.Option(
         help="RabbitMQ password.", rich_help_panel="Customization and Utils"
     )],
     file_path: Annotated[
@@ -98,13 +97,14 @@ def rabbit_mq(
     )
 
     # Start reading the data as a stream
-    for data in reader.read():
-        message = clients.rabbitmq.RabbitMQMessage(
-            topic=topic,
-            exchange=exchange,
-            body=bytes_seralizar.serialize(data=data)
-        )
-        producer.publish(message=message)
+    with producer as publisher:
+        for data in reader.read():
+            message = clients.rabbitmq.RabbitMQMessage(
+                topic=topic,
+                exchange=exchange,
+                body=bytes_seralizar.serialize(data=data)
+            )
+            publisher.publish(message=message)
        
 
 if __name__ == "__main__":

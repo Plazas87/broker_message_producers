@@ -1,5 +1,13 @@
 {
     "bindings": [
+        {
+            "source":"temperature",
+            "vhost":"/",
+            "destination":"room_1",
+            "destination_type":"queue",
+            "routing_key":"temperature.room_1",
+            "arguments":{}
+        }
     ],
     "exchanges": [
         {
@@ -24,7 +32,22 @@
         }
     ],
     "policies": [],
-    "queues": [],
+    "queues": [
+        {
+            "name":"room_1",
+            "vhost":"/",
+            "durable":true,
+            "auto_delete":true,
+            "arguments":{}
+        },
+        {
+            "name":"room_2",
+            "vhost":"/",
+            "durable":true,
+            "auto_delete":true,
+            "arguments":{}
+        }
+    ],
     "rabbit_version": "3.12.2",
     "rabbitmq_version": "3.12.2",
     "topic_permissions": [],
