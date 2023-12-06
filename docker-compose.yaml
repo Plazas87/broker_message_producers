@@ -60,6 +60,6 @@ services:
   #     - SPARK_SSL_ENABLED=no
   #     - SPARK_USER=spark
 
-# volumes:
-#   rabbitmq_data:
-#     driver: local
+volumes:
+  rabbitmq_data:
+    driver: local
