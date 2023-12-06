@@ -1,5 +1,3 @@
-
-
 from abc import ABC, abstractmethod
 from typing import Generator, Generic, TypeVar
 
@@ -23,9 +21,14 @@ class ISerializer(ABC, Generic[T, V]):
         """Serialize data."""
 
 
-class IProducer(ABC):
+class IMessage(ABC):
+    """IMessage interface."""
+
+
+
+class IProducer(ABC, Generic[T]):
     """IProducer interface."""
 
     @abstractmethod
-    def publish(self) -> None:
+    def publish(self, message: T) -> None:
         """Publish messages to a Broker."""
