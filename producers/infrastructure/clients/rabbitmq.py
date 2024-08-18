@@ -2,11 +2,14 @@
 from __future__ import annotations
 from dataclasses import dataclass
 
-from typing import Any, Dict
+import logging
 
 import pika
+from pika.adapters.blocking_connection import BlockingChannel
 
 from ...application.ports import IProducer, IMessage
+
+logger = logging.getLogger(__name__)
 
 
 @dataclass
@@ -19,7 +22,7 @@ class RabbitMQMessage(IMessage):
 
  
 class Producer(IProducer[IMessage]):
-    """Producer class."""
+    """RabbitMQ Producer class."""
 
     _user: str
     _password: str
@@ -29,6 +32,7 @@ class Producer(IProducer[IMessage]):
     _delivery_mode: str
     _content_type: str
     _content_encoding: str
+    _channel: BlockingChannel
 
     def __init__(
         self,
@@ -61,7 +65,7 @@ class Producer(IProducer[IMessage]):
         self._connection = pika.BlockingConnection(parameters=parameters)
 
     def __enter__(self) -> Producer:
-        """Create and start a connection with rabbitmq when the context manages is started."""
+        """Create and start a connection with rabbitmq using the context manager interface."""
         self._connect()
         self._channel = self._connection.channel()
 
@@ -72,7 +76,7 @@ class Producer(IProducer[IMessage]):
         # Gracefully close the connection
         self._connection.close()
 
-    def publish(self, message: RabbitMQMessage) -> Dict[str, Any]:
+    def publish(self, message: RabbitMQMessage) -> None:
         """
         Publish a message to RabbitMQ.
 
@@ -80,7 +84,7 @@ class Producer(IProducer[IMessage]):
             message (RabbitMQMessage): message to publish
 
         Returns
-            Dict[str, Any]: # TBD
+            None 
         """
         properties = pika.BasicProperties(
             delivery_mode=pika.DeliveryMode[self._delivery_mode],
@@ -94,4 +98,5 @@ class Producer(IProducer[IMessage]):
             body=message.body,
             properties=properties
         )
-        return {}
+        logger.info("Message sent: '%s'", message.body)
+

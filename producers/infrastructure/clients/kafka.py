@@ -20,7 +20,7 @@ class KafkaMessage(IMessage):
     body: bytes
 
 class Producer(IProducer):
-    """Producer class."""
+    """Kafka Producer class."""
 
     _serializer: ISerializer[Dict[str, int], bytes]
     _bootstrap_server_host: str
