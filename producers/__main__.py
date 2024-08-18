@@ -9,8 +9,9 @@ from .infrastructure import serializers
 from .infrastructure import clients
 
 
-logging.basicConfig(encoding="utf-8", level=logging.INFO)
+logging.basicConfig(encoding="utf-8", format='%(levelname)s:%(message)s', level=logging.INFO)
 
+logger = logging.getLogger(__name__)
 
 app = typer.Typer(rich_markup_mode="rich")
 
@@ -53,38 +54,39 @@ def kafka(
 @app.command()
 def rabbit_mq(
     host: Annotated[
-        str, typer.Option(help="Broker server host.", rich_help_panel="Customization and Utils")
+        str, typer.Option(help="Broker server host.")
     ],
     port: Annotated[
-        int, typer.Option(help="Broker server port.", rich_help_panel="Customization and Utils")
+        int, typer.Option(help="Broker server port.")
     ],
     exchange: Annotated[
-        str, typer.Option(help="Exchange to use.", rich_help_panel="Customization and Utils")
+        str, typer.Option(help="Exchange to use.")
     ],
     topic: Annotated[
-        str, typer.Option(help="Topic to publish message to.", rich_help_panel="Customization and Utils")
+        str, typer.Option(help="Topic to publish message to.")
     ],
     vhost: Annotated[
-        str, typer.Option(help="Topic to publish message to.", rich_help_panel="Customization and Utils")
+        str, typer.Option(help="Virtual host.")
     ],
     user: Annotated[str, typer.Option(
-        help="RabbitMQ user.", rich_help_panel="Customization and Utils"
+        help="User."
     )],
     password: Annotated[str, typer.Option(
-        help="RabbitMQ password.", rich_help_panel="Customization and Utils"
+        help="Password."
     )],
     file_path: Annotated[
         str,
         typer.Option(
-            help="Path to the '.csv' file.",
-            rich_help_panel="Customization and Utils",
+            help="Path to the '.csv' file that contains the sample data."
         ),
     ] = ".",
 ) -> None:
     """Plusblish messages to RabbitMQ broker."""
     reader = Reader(path=file_path)
     bytes_seralizar = serializers.bytes.Serializer()
-    
+
+    logger.info("Starting the RabbitMQ producer...")
+
     producer = clients.rabbitmq.Producer(
         host=host,
         port=port,
@@ -96,7 +98,7 @@ def rabbit_mq(
         content_encoding="utf-8",
     )
 
-    # Start reading the data as a stream
+    # Start reading the data as a stream from a file.
     with producer as publisher:
         for data in reader.read():
             message = clients.rabbitmq.RabbitMQMessage(
@@ -105,7 +107,7 @@ def rabbit_mq(
                 body=bytes_seralizar.serialize(data=data)
             )
             publisher.publish(message=message)
-       
+
 
 if __name__ == "__main__":
     app()
