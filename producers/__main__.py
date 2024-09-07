@@ -19,23 +19,20 @@ app = typer.Typer(rich_markup_mode="rich")
 @app.command()
 def kafka(
     host: Annotated[
-        str, typer.Option(help="Bootstrap server host.", rich_help_panel="Customization and Utils")
+        str, typer.Option(help="Bootstrap server host.")
     ],
     port: Annotated[
-        int, typer.Option(help="Bootstrap server port.", rich_help_panel="Customization and Utils")
+        int, typer.Option(help="Bootstrap server port.")
     ],
     topic: Annotated[
-        str, typer.Option(help="Topic to publish message to.", rich_help_panel="Customization and Utils")
+        str, typer.Option(help="Topic to publish message to.")
     ],
     partition: Annotated[
-        int, typer.Option(help="Topic's partition.", rich_help_panel="Customization and Utils")
+        int, typer.Option(help="Topic's partition.")
     ],
     file_path: Annotated[
         str,
-        typer.Option(
-            help="Path to the '.csv' file.",
-            rich_help_panel="Customization and Utils",
-        ),
+        typer.Option(help="Path to the '.csv' file."),
     ] = ".",
 ) -> None:
     """Publish messages to a kafka broker."""
