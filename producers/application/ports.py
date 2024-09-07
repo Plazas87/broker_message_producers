@@ -25,7 +25,6 @@ class IMessage(ABC):
     """IMessage interface."""
 
 
-
 class IProducer(ABC, Generic[T]):
     """IProducer interface."""
 

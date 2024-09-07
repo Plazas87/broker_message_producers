@@ -17,6 +17,53 @@ grpcio = "^1.56.2"
 pika = "^1.3.2"
 
 
+[tool.poetry.group.dev.dependencies]
+pre-commit = "^3.8.0"
+
+[tool.black]
+include = '\.pyi?$'
+exclude = '''
+/(
+    \.git
+  | \.hg
+  | \.mypy_cache
+  | \.tox
+  | \.venv
+  | \.vscode
+  | \.pytest_cache
+  | build
+  | dist
+  | notebooks
+)/
+'''
+
+[tool.isort]
+profile = "black"
+skip = [
+    ".gitignore",
+    ".dockerignore",
+    ".vscode",
+    ".venv",
+    ".pytest_cache"
+]
+skip_gitignore = true
+extend_skip = [".md", ".json", ".lock", ".ini"]
+extend_skip_glob = ["notebooks/*"]
+src_paths = ["src"]
+
+[tool.mypy]
+python_version = "3.10"
+check_untyped_defs = true
+disallow_any_generics = true
+disallow_untyped_defs = true
+ignore_missing_imports = true
+no_implicit_optional = true
+strict_optional = true
+warn_redundant_casts = true
+warn_unused_configs = true
+warn_unused_ignores = true
+
+
 [build-system]
 requires = ["poetry-core"]
 build-backend = "poetry.core.masonry.api"

@@ -1,2 +1,1 @@
 """Producer package."""
-

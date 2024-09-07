@@ -2,11 +2,10 @@
 import logging
 from dataclasses import dataclass
 from typing import Dict
+
 from kafka import KafkaProducer
 
-from ...application.ports import IProducer, ISerializer
-from ...application.ports import IMessage
-
+from ...application.ports import IMessage, IProducer, ISerializer
 
 logger = logging.getLogger(__name__)
 
@@ -18,6 +17,7 @@ class KafkaMessage(IMessage):
     topic: str
     partition: str
     body: bytes
+
 
 class Producer(IProducer):
     """Kafka Producer class."""
@@ -40,5 +40,7 @@ class Producer(IProducer):
 
     def publish(self, message: KafkaMessage) -> None:
         """Publish data to the broker."""
-        self._broker_client.send(topic=message.topic, partition=message.partition, value=message.body)
+        self._broker_client.send(
+            topic=message.topic, partition=message.partition, value=message.body
+        )
         logger.info("Message sent: '%s'", message.body)

@@ -1,13 +1,13 @@
 """RabbitMQ producer module."""
 from __future__ import annotations
-from dataclasses import dataclass
 
 import logging
+from dataclasses import dataclass
 
 import pika
 from pika.adapters.blocking_connection import BlockingChannel
 
-from ...application.ports import IProducer, IMessage
+from ...application.ports import IMessage, IProducer
 
 logger = logging.getLogger(__name__)
 
@@ -20,7 +20,7 @@ class RabbitMQMessage(IMessage):
     topic: str
     body: bytes
 
- 
+
 class Producer(IProducer[IMessage]):
     """RabbitMQ Producer class."""
 
@@ -43,7 +43,7 @@ class Producer(IProducer[IMessage]):
         vhost: str,
         delivery_mode: str = "Persistant",
         content_type: str = "application/json",
-        content_encoding: str = "utf-8"
+        content_encoding: str = "utf-8",
     ) -> None:
         """Class constructor."""
         self._user = user
@@ -60,7 +60,10 @@ class Producer(IProducer[IMessage]):
         """Connect to RabbitMQ."""
         credentials = pika.PlainCredentials(self._user, self._password)
         parameters = pika.ConnectionParameters(
-            host=self._host, port=self._port, virtual_host=self._vhost, credentials=credentials
+            host=self._host,
+            port=self._port,
+            virtual_host=self._vhost,
+            credentials=credentials,
         )
         self._connection = pika.BlockingConnection(parameters=parameters)
 
@@ -84,19 +87,18 @@ class Producer(IProducer[IMessage]):
             message (RabbitMQMessage): message to publish
 
         Returns
-            None 
+            None
         """
         properties = pika.BasicProperties(
             delivery_mode=pika.DeliveryMode[self._delivery_mode],
             content_type=self._content_type,
-            content_encoding=self._content_encoding
+            content_encoding=self._content_encoding,
         )
 
         self._channel.basic_publish(
             exchange=message.exchange,
             routing_key=message.topic,
             body=message.body,
-            properties=properties
+            properties=properties,
         )
         logger.info("Message sent: '%s'", message.body)
-
