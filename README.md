@@ -7,18 +7,18 @@
 
 ## Introduction
 
-The first step in almost every data project is data ingestion. 
-Regardless of the data's location or format, you must find a way to 
-transform it into an incoming data flow for your project. This allows 
-you to clean, process, and ultimately generate insights or build 
+The first step in almost every data project is data ingestion.
+Regardless of the data's location or format, you must find a way to
+transform it into an incoming data flow for your project. This allows
+you to clean, process, and ultimately generate insights or build
 machine-learning models from it.
 
-In this project, we aim to build and connect the necessary components 
-for a data ingestion setup using Kafka or RabbitQM and Python. For the sake of 
-simplicity, we will be using a *'.csv'* file as the data source and 
-simulate a continuous incoming data flow with its data. Think of it as 
-something similar to a temperature sensor or stock prices during open 
-hours. 
+In this project, we aim to build and connect the necessary components
+for a data ingestion setup using Kafka or RabbitQM and Python. For the sake of
+simplicity, we will be using a *'.csv'* file as the data source and
+simulate a continuous incoming data flow with its data. Think of it as
+something similar to a temperature sensor or stock prices during open
+hours.
 
 You can check the Python Kafka Medium article for this project in: [A Python Kafka Producer](https://bit.ly/python-kafka-producer)
 You can check the Python RabbitMQ Medium article for this project in: [A Python RabbitMQ Producer]()
@@ -175,4 +175,3 @@ Once the Producer is running, you will be able to see and consume these messages
 Finally, you can manually consume these messages to confirm that our Producer is working. To do this, inspect the "*room_1*" *queue* by clicking on it and scrolling down to the 'Get messages' section. Once there, let's get the first two messages we sent.
 
 ![Management plugin -Queues](./docs/images/rabbit-mq_get_messages.png)
-

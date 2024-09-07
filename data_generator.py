@@ -1,7 +1,9 @@
-from datetime import datetime
 import random
-import pandas as pd
 import time
+from datetime import datetime
+
+import pandas as pd
+
 
 def main():
     data = {}

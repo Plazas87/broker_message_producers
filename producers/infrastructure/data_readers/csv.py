@@ -2,6 +2,7 @@
 import pathlib
 import time
 from typing import Any, Dict, Generator
+
 import pandas as pd
 
 from . import IReader
@@ -28,5 +29,5 @@ class Reader(IReader[Dict[str, Any]]):
                 time.sleep(5)  # simulates a sample rate of 5 second for a sensor
                 yield {
                     "temperature": measurement.temperature,
-                    "timestamp": measurement.timestamp
+                    "timestamp": measurement.timestamp,
                 }
